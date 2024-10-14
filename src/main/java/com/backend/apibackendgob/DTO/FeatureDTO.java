@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class FeatureDTO {
+    private Long id;
     private String title;
     private String description;
     private List<TaskDTO> tasks;

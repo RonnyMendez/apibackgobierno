@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TaskDTO {
+    private Long id;
     private int issueType;
     private int sprint;
     private String summary;

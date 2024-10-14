@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.backend.apibackendgob.DTO.FeatureDTO;
 import com.backend.apibackendgob.DTO.TaskDTO;
+import com.backend.apibackendgob.services.FeatureService;
 import com.backend.apibackendgob.services.PythonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,26 +16,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/features")
 public class FeatureController {
 
+     private final FeatureService featureService;
     private final PythonService pythonService;
 
     @Autowired
-    public FeatureController(PythonService pythonService) {
+    public FeatureController(FeatureService featureService, PythonService pythonService) {
+        this.featureService = featureService;
         this.pythonService = pythonService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<FeatureDTO> createFeature(@RequestBody FeatureDTO feature) {
-        List<TaskDTO> tasks = feature.getTasks();
-
-        for (TaskDTO task : tasks) {
-            // Llamada al servicio de Python para obtener el story point
+    // Endpoint para calcular story points
+    @PostMapping("/calculate-story-points")
+    public ResponseEntity<FeatureDTO> calculateStoryPoints(@RequestBody FeatureDTO featureDTO) {
+        for (TaskDTO task : featureDTO.getTasks()) {
             int storyPoint = pythonService.getStoryPointForTask(task);
-            task.setStoryPoint(storyPoint);  // Asignamos el story point retornado
+            task.setStoryPoint(storyPoint);
         }
-
-        // Aquí podrías guardar el Feature y las Tasks en la base de datos si lo deseas
-
-        // Devolvemos el feature con las tasks actualizadas
-        return ResponseEntity.ok(feature);
+        return ResponseEntity.ok(featureDTO);
     }
+
+    // Endpoint para guardar el feature
+    @PostMapping("/save")
+    public ResponseEntity<FeatureDTO> saveFeature(@RequestBody FeatureDTO featureDTO) {
+        FeatureDTO savedFeature = featureService.saveFeature(featureDTO);
+        return ResponseEntity.ok(savedFeature);
+    }
+
 }
