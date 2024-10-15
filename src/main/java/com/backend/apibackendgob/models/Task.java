@@ -2,8 +2,11 @@ package com.backend.apibackendgob.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -12,37 +15,37 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "issueType") // Asegurando el mapeo explícito
+    @Column(name = "issueType", nullable = false)
     private int issueType;
 
-    @Column(name = "sprint")
+    @Column(name = "sprint", nullable = false)
     private int sprint;
 
-    @Column(name = "summary")
+    @Column(name = "summary", nullable = false)
     private String summary;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private int status;
 
-    @Column(name = "priority")
+    @Column(name = "priority", nullable = false)
     private int priority;
 
-    @Column(name = "commentCount")
+    @Column(name = "commentCount", nullable = false)
     private int commentCount;
 
-    @Column(name = "votes")
+    @Column(name = "votes", nullable = false)
     private int votes;
 
-    @Column(name = "blockedBy") // Asegurando el mapeo explícito
+    @Column(name = "blockedBy")
     private int blockedBy;
 
     @Column(name = "blocks")
     private int blocks;
 
-    @Column(name = "dependedOnBy") // Asegurando el mapeo explícito
+    @Column(name = "dependedOnBy")
     private int dependedOnBy;
 
-    @Column(name = "dependedOn") // Asegurando el mapeo explícito
+    @Column(name = "dependedOn")
     private int dependedOn;
 
     @Column(name = "storyPoint")

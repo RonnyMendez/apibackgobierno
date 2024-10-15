@@ -38,14 +38,27 @@ public class FeatureService {
     private Feature mapDTOToFeature(FeatureDTO featureDTO) {
         Feature feature = new Feature();
         feature.setTitle(featureDTO.getTitle());
+        feature.setDescription(featureDTO.getDescription());  // Asegúrate de mapear también la descripción del feature
+
         List<Task> tasks = featureDTO.getTasks().stream().map(taskDTO -> {
             Task task = new Task();
             task.setIssueType(taskDTO.getIssueType());
-            // Mapear todos los campos de TaskDTO a Task
+            task.setSprint(taskDTO.getSprint());
+            task.setSummary(taskDTO.getSummary());  // Este campo es crucial, debe ser mapeado
+            task.setStatus(taskDTO.getStatus());
+            task.setPriority(taskDTO.getPriority());
+            task.setCommentCount(taskDTO.getCommentCount());
+            task.setVotes(taskDTO.getVotes());
+            task.setBlockedBy(taskDTO.getBlockedBy());
+            task.setBlocks(taskDTO.getBlocks());
+            task.setDependedOnBy(taskDTO.getDependedOnBy());
+            task.setDependedOn(taskDTO.getDependedOn());
             task.setStoryPoint(taskDTO.getStoryPoint());
-            task.setFeature(feature); // Establecer relación
+
+            task.setFeature(feature); // Establecer la relación con el feature
             return task;
         }).collect(Collectors.toList());
+
         feature.setTasks(tasks);
         return feature;
     }
@@ -54,12 +67,26 @@ public class FeatureService {
         FeatureDTO featureDTO = new FeatureDTO();
         featureDTO.setId(feature.getId());
         featureDTO.setTitle(feature.getTitle());
+        featureDTO.setDescription(feature.getDescription()); // Mapear la descripción
+
         List<TaskDTO> taskDTOs = feature.getTasks().stream().map(task -> {
             TaskDTO taskDTO = new TaskDTO();
             taskDTO.setId(task.getId());
-            // Mapear todos los campos de Task a TaskDTO
+            taskDTO.setIssueType(task.getIssueType());
+            taskDTO.setSprint(task.getSprint());
+            taskDTO.setSummary(task.getSummary());  // Mapear el campo summary de vuelta al DTO
+            taskDTO.setStatus(task.getStatus());
+            taskDTO.setPriority(task.getPriority());
+            taskDTO.setCommentCount(task.getCommentCount());
+            taskDTO.setVotes(task.getVotes());
+            taskDTO.setBlockedBy(task.getBlockedBy());
+            taskDTO.setBlocks(task.getBlocks());
+            taskDTO.setDependedOnBy(task.getDependedOnBy());
+            taskDTO.setDependedOn(task.getDependedOn());
+            taskDTO.setStoryPoint(task.getStoryPoint());
             return taskDTO;
         }).collect(Collectors.toList());
+
         featureDTO.setTasks(taskDTOs);
         return featureDTO;
     }
